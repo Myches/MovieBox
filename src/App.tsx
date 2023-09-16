@@ -1,7 +1,7 @@
 import './index.css'
 import './App.css'
 import Homepage from './Pages/Homepage';
-import {HashRouter,Route,Routes} from 'react-router-dom'
+import {BrowserRouter,Route,Routes} from 'react-router-dom'
 import Details from './Pages/Details';
 
 function App() {
@@ -10,12 +10,12 @@ function App() {
   return (
 
     <div>
-       <HashRouter>
+       <BrowserRouter>
        <Routes >
        <Route  path ="/" element={<Homepage />} />
-       <Route  path ="/Details" element={<Details />} />
+       <Route  path ="/movies/:id" element={<Details />} />
        </Routes>
-       </HashRouter>
+       </BrowserRouter>
    </div>
   )
 }

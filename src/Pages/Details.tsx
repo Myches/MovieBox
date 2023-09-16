@@ -1,6 +1,6 @@
 import { useState ,useEffect  } from 'react'
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 
@@ -20,28 +20,30 @@ function Details() {
   }
 
   const [movieDetails, setMovieDetails] = useState<Movie | null>(null); 
-  const location = useLocation();
+  const {id} = useParams()
+
+
 
   useEffect(() => {
-    if (location.state) {
-      const apiKey = 'ae6f657b67b8c0970d89d18ee18d1de7';
-      axios
-        .get(`https://api.themoviedb.org/3/movie/${location.state.id}?api_key=${apiKey}&language=en-US`)
-        .then((response) => {
-          const movieResult = response.data; 
+         
+    const apiKey = 'ae6f657b67b8c0970d89d18ee18d1de7'; 
+    axios
+    .get(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US&page=1`)
+      .then((response) => {
+        const movieResult = response.data; 
           if (movieResult.release_date) {
             const releaseDateUTC = new Date(movieResult.release_date).toUTCString();
             movieResult.release_date = releaseDateUTC;
           }
-        
-          setMovieDetails(movieResult);
-          console.log(movieResult);
-        })
-        .catch((error) => {
-          console.error('Error fetching movie:', error);
-        });
-    }
-  }, [location.state]);
+        setMovieDetails(movieResult);
+        console.log(movieResult)
+      })
+      .catch((error) => {
+        console.error('Error fetching movies:', error);
+      });
+  }, [id]);
+
+
 
   
 
@@ -98,7 +100,7 @@ function Details() {
 
              <div className='lg:flex lg:flex-row flex flex-col'>
              <div className='mt-4  lg:w-[60%] w-[100%] flex-col justify-around items-center'>
-             <p data-testid="movie-overtime" >{movieDetails.overview}</p>
+             <p data-testid="movie-overview" >{movieDetails.overview}</p>
              <button className='mt-4 bg-red-700 p-2 text-white border rounded-lg '>Top Rated Movie #65</button>
               </div>
 
